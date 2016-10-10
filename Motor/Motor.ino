@@ -14,8 +14,10 @@ void MotorSpeedSetAB(
     unsigned char motorSpeedA,
     unsigned char motorSpeedB)
 {
-  motorSpeedA=map(motorSpeedA,0,100,0,255);
-  motorSpeedB=map(motorSpeedB,0,100,0,255);
+  motorSpeedA = constrain(
+    map(motorSpeedA,0,100,0,255), 0, 255);
+  motorSpeedB = constrain(
+    map(motorSpeedB,0,100,0,255), 0, 255);;
   Wire.beginTransmission(I2CMotorDriverAddr);
   Wire.write(MotorSpeedSet);
   Wire.write(motorSpeedA);
@@ -53,8 +55,7 @@ void MotorDriectionAndSpeedSet(
   MotorSpeedSetAB(motorSpeedA, motorSpeedB);  
 }
 
-void setup()
-{
+void setup() {
   Wire.begin();
   Bean.sleep(10);
   //Serial.begin(9600);
@@ -62,18 +63,15 @@ void setup()
   //stepperrun();
 }
 
-void loop()
-{
-   while(1) {
-    MotorSpeedSetAB(255, 255);
-    Bean.sleep(10); //this delay needed
+void loop() {
+  MotorSpeedSetAB(50, 50);
+  Bean.sleep(10); //this delay needed
 
-    MotorDirectionSet(0b1010);
+  MotorDirectionSet(0b1010);
     //"0b1010" defines the output polarity, "10" means the M+ is "positive" while the M- is "negative"
     // make sure M+ and M- is different polarity when driving DC motors.
-    Bean.sleep(1000); 
+  Bean.sleep(1000); 
 
-    MotorDirectionSet(0b0101);  //0b0101  Rotating in the opposite direction
-    Bean.sleep(500);
-  }
+  MotorDirectionSet(0b0101);  //0b0101  Rotating in the opposite direction
+  Bean.sleep(1000);
 }
