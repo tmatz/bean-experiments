@@ -57,16 +57,15 @@ void MotorDriectionAndSpeedSet(
 
 void setup() {
   Wire.begin();
-  Bean.sleep(10);
+  Bean.sleep(10*1000);
   //Serial.begin(9600);
   //Serial.println("setup begin");
   //stepperrun();
+  MotorSpeedSetAB(100, 100);
+  Bean.sleep(10); //this delay needed
 }
 
 void loop() {
-  MotorSpeedSetAB(50, 50);
-  Bean.sleep(10); //this delay needed
-
   MotorDirectionSet(0b1010);
     //"0b1010" defines the output polarity, "10" means the M+ is "positive" while the M- is "negative"
     // make sure M+ and M- is different polarity when driving DC motors.
