@@ -1,4 +1,4 @@
-uint8_t sPciNo[] = {
+const uint8_t sPciNo[] = {
   18, 20, 22, 23, 0, 1, 2, 3, 4, 5, // D0-9
   8, 9, 10, 11, 12, 13 // A0-5
 };
@@ -17,6 +17,7 @@ boolean a3 = false;
 boolean a3Changed = false;
 
 void setup() {
+  BeanHid.enable();
   pinMode(A3, INPUT);
   setInterrupt(A3);
   a3 = digitalRead(A3);
@@ -24,11 +25,15 @@ void setup() {
 }
 
 void loop() {
-    Bean.sleep(0xFFFFFFFF);
-    setLed(a3);
+  Bean.sleep(0xFFFFFFFF);
+  setLed(a3);
+  if (a3 && a3Changed) {
+    //BeanHid.sendMediaControl(VOLUME_DOWN);
+    BeanHid.sendMouseClick();
+  }
 }
 
-void setLed(boolean b) {
+void setLed(bool b) {
   if (b) {
     Bean.setLed(0,30,0);
   } else {
@@ -44,7 +49,6 @@ ISR(PCINT1_vect) {
   a3 = digitalRead(A3);
   a3Changed = a3 != old;
 }
-
 
 ISR(PCINT2_vect) {
 }
